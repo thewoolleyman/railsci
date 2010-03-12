@@ -1,0 +1,1 @@
+Continuous Integration for the Ruby on Rails framework.
