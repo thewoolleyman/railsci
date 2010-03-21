@@ -12,4 +12,7 @@ SERVERS
   * demo.ci.rubyonrails.org
     * 174.129.13.177
 
+EC2 Info
+========
+* AMI: ami-0d729464 - alestic/ubuntu-9.04-jaunty-base-20090614.manifest.xml
 
