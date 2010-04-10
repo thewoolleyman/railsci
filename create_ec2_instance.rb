@@ -4,18 +4,24 @@ require 'right_aws'
 
 class CreateEc2Instance
   def run
-    raise "set AWS_ACCESS_KEY_ID" unless aws_access_key_id = ENV['AWS_ACCESS_KEY_ID']
-    raise "set AWS_SECRET_ACCESS_KEY" unless aws_secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
-    raise "set AWS_SSH_KEY_NAME" unless aws_ssh_key_name = ENV['AWS_SSH_KEY_NAME']
-    ec2 = RightAws::Ec2.new(aws_access_key_id, aws_secret_access_key)
-    instances_data = ec2.run_instances('ami-0d729464', 1, 1, ['default'], aws_ssh_key_name, '', 'public')
+    ec2 = create_ec2
+    instances_data = ec2.run_instances('ami-0d729464', 1, 1, ['default'], @aws_ssh_key_name, '', 'public')
     puts "EC2 instance starting.  Hit enter when it is started..."
     gets
     instance_data = instances_data.first
   end
+  
+  def load_credentials
+    raise "set AWS_ACCESS_KEY_ID" unless @aws_access_key_id = ENV['AWS_ACCESS_KEY_ID']
+    raise "set AWS_SECRET_ACCESS_KEY" unless @aws_secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
+    raise "set AWS_SSH_KEY_NAME" unless @aws_ssh_key_name = ENV['AWS_SSH_KEY_NAME']
+  end
+  
+  def create_ec2
+    load_credentials
+    @ec2 = RightAws::Ec2.new(@aws_access_key_id, @aws_secret_access_key)
+  end
 end
-
-CreateEc2Instance.new.run
 
 # = RightAWS::EC2 -- RightScale Amazon EC2 interface
 # The RightAws::EC2 class provides a complete interface to Amazon's
