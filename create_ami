@@ -5,8 +5,9 @@
 #  Copyright (c) 2010 Chad Woolley - The MIT License
 
 create_ami() {
-  export AMIBUILDER_CUSTOM_SETUP_URL='http://github.com/thewoolleyman/railsci/raw/master/script/rails_ci_setup'
-  wget -O /tmp/amibuilder http://github.com/thewoolleyman/amibuilder/raw/master/amibuilder
+  export AMIBUILDER_CUSTOM_SETUP_URL=${AMIBUILDER_CUSTOM_SETUP_URL:-'http://github.com/thewoolleyman/railsci/raw/master/script/rails_ci_setup'}
+  AMIBUILDER_URL=${AMIBUILDER_URL:-'http://github.com/thewoolleyman/amibuilder/raw/master/amibuilder'}
+  wget -O /tmp/amibuilder $AMIBUILDER_URL
   chmod a+x /tmp/amibuilder
   /tmp/amibuilder
 }

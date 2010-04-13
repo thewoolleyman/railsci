@@ -6,8 +6,8 @@
 
 echo "Run an instance of the Rails Continuous Integration server.  Requires RightScale AWS gem: gem install right_aws --no-ri --no-rdoc"
 
-if [ -e ~/.railsci ]; then
-  . ~/.railsci
+if [ -e ~/.railscirc ]; then
+  . ~/.railscirc
 fi
 
 ./lib/run_rails_ci_instance.rb

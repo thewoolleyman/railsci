@@ -1,28 +1,47 @@
 #!/usr/bin/env bash
 
 config() {
-  teamcity_version=5.0.3
+  rvm_rubies=${RVM_RUBIES:-'1.8.6 1.8.7 1.9.2'}
   config_dir=~/.railsci
   mkdir -p $config_dir
 }
 
+install_packages() {
+  echo "Installing packages to build Ruby..."
+  apt-get update
+  apt-get install -y build-essential zlib1g zlib1g-dev libssl-dev openssl libreadline5-dev openssh-server openssh-client ssh wget
+}
+
 __enable_rvm() {
-  rvm_init='if [[ -s /home/ubuntu/.rvm/scripts/rvm ]] ; then source /home/ubuntu/.rvm/scripts/rvm ; fi'
-  if rvm_line=$(grep '.rvm' ~/.bashrc); test -z "$rvm_line"; then
+  echo "Enabling RVM in init scripts"
+  rvm_init="if [[ -s $HOME/.rvm/scripts/rvm ]] ; then source $HOME/.rvm/scripts/rvm ; fi"
+  if rvm_line=$(grep '.rvm' $init_file); test -z "$rvm_line"; then
     echo $rvm_init >> $init_file
   fi
   sed -i'.bak' -e 's/ && return.*$//' $init_file
 }
 
+__install_rvm_rubies() {
+  echo "Installing RVM rubies: $rvm_rubies"
+  for rvm_ruby in $rvm_rubies
+  do
+    rvm install $rvm_ruby
+  done
+}
+
 setup_rvm() {
+  echo "Setting up RVM..."
   bash < <(curl http://rvm.beginrescueend.com/releases/rvm-install-latest)
   for init_file in ~/.bashrc ~/.bash_profile
   do
     __enable_rvm
+    __install_rvm_rubies
   done
 }
 
 setup_all() {
+  echo "Setting up Rails CI..."
+  install_packages
   setup_rvm
 }
 
