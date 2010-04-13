@@ -1,11 +1,9 @@
-#!/usr/bin/env ruby
-
 require 'right_aws'
 
-class CreateEc2Instance
+class RunInstance
   def run
     ec2 = create_ec2
-    instances_data = ec2.run_instances('ami-0d729464', 1, 1, ['default'], @aws_ssh_key_name, '', 'public')
+    instances_data = ec2.run_instances('ami-0d729464', 1, 1, ['default'], @ec2_keypair_name, '', 'public')
     puts "EC2 instance starting.  Hit enter when it is started..."
     gets
     instance_data = instances_data.first
@@ -14,7 +12,7 @@ class CreateEc2Instance
   def load_credentials
     raise "set AWS_ACCESS_KEY_ID" unless @aws_access_key_id = ENV['AWS_ACCESS_KEY_ID']
     raise "set AWS_SECRET_ACCESS_KEY" unless @aws_secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
-    raise "set AWS_SSH_KEY_NAME" unless @aws_ssh_key_name = ENV['AWS_SSH_KEY_NAME']
+    raise "set EC2_KEYPAIR_NAME" unless @ec2_keypair_name = ENV['EC2_KEYPAIR_NAME']
   end
   
   def create_ec2

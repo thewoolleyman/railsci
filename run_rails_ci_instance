@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+#  Rails CI - run_rails_ci_instance - http://github.com/thewoolleyman/railsci
+#  Script to automatically start an EC2 instance running the official Ruby on Rails Continuous Integration build
+#  Copyright (c) 2010 Chad Woolley - The MIT License
+
+echo "Run an instance of the Rails Continuous Integration server.  Requires RightScale AWS gem: gem install right_aws --no-ri --no-rdoc"
+
+if [ -e ~/.railsci ]; then
+  . ~/.railsci
+fi
+
+./lib/run_rails_ci_instance.rb
