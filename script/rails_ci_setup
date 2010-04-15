@@ -30,7 +30,9 @@ __install_rvm_rubies() {
 
 setup_rvm() {
   echo "Setting up RVM..."
-  bash < <(curl http://rvm.beginrescueend.com/releases/rvm-install-latest)
+  curl -O http://rvm.beginrescueend.com/releases/rvm-install-latest
+  chmod a+x rvm-install-latest
+  ./rvm-install-latest
   for init_file in ~/.bashrc ~/.bash_profile
   do
     if [[ -e $init_file ]]; then
