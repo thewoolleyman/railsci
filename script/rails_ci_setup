@@ -8,8 +8,8 @@ config() {
 
 install_packages() {
   echo "Installing packages to build Ruby..."
-  apt-get update
-  apt-get install -y build-essential zlib1g zlib1g-dev libssl-dev openssl libreadline5-dev openssh-server openssh-client ssh wget
+  sudo apt-get update
+  sudo apt-get install -y build-essential zlib1g zlib1g-dev libssl-dev openssl libreadline5-dev openssh-server openssh-client ssh wget
 }
 
 __enable_rvm() {
