@@ -13,7 +13,6 @@ install_packages() {
 }
 
 __enable_rvm() {
-  echo "Enabling RVM in init scripts"
   rvm_init="if [[ -s $HOME/.rvm/scripts/rvm ]] ; then source $HOME/.rvm/scripts/rvm ; fi"
   if rvm_line=$(grep '.rvm' $init_file); test -z "$rvm_line"; then
     echo $rvm_init >> $init_file
@@ -22,9 +21,9 @@ __enable_rvm() {
 }
 
 __install_rvm_rubies() {
-  echo "Installing RVM rubies: $rvm_rubies"
   for rvm_ruby in $rvm_rubies
   do
+    echo "Installing RVM ruby: $rvm_ruby"
     rvm install $rvm_ruby
   done
 }
@@ -34,9 +33,12 @@ setup_rvm() {
   bash < <(curl http://rvm.beginrescueend.com/releases/rvm-install-latest)
   for init_file in ~/.bashrc ~/.bash_profile
   do
-    __enable_rvm
-    __install_rvm_rubies
+    if [[ -e $init_file ]]; then
+      echo "Enabling RVM in init file $init_file"
+      __enable_rvm
+    fi
   done
+  __install_rvm_rubies
 }
 
 setup_all() {
