@@ -12,7 +12,15 @@ install_packages() {
   sudo apt-get install -y build-essential zlib1g zlib1g-dev libssl-dev openssl libreadline5-dev openssh-server openssh-client ssh wget
 }
 
-__enable_rvm() {
+install_rvm() {
+  echo "Installing RVM..."
+  curl -O http://rvm.beginrescueend.com/releases/rvm-install-latest
+  chmod a+x rvm-install-latest
+  ./rvm-install-latest
+}
+
+enable_rvm() {
+  echo "Enabling RVM in init file $init_file"
   rvm_init="if [[ -s $HOME/.rvm/scripts/rvm ]] ; then source $HOME/.rvm/scripts/rvm ; fi"
   if rvm_line=$(grep '.rvm' $init_file); test -z "$rvm_line"; then
     echo $rvm_init >> $init_file
@@ -20,7 +28,7 @@ __enable_rvm() {
   sed -i'.bak' -e 's/ && return.*$//' $init_file
 }
 
-__install_rvm_rubies() {
+install_rvm_rubies() {
   for rvm_ruby in $rvm_rubies
   do
     echo "Installing RVM ruby: $rvm_ruby"
@@ -30,17 +38,14 @@ __install_rvm_rubies() {
 
 setup_rvm() {
   echo "Setting up RVM..."
-  curl -O http://rvm.beginrescueend.com/releases/rvm-install-latest
-  chmod a+x rvm-install-latest
-  ./rvm-install-latest
+  install_rvm
   for init_file in ~/.bashrc ~/.bash_profile
   do
     if [[ -e $init_file ]]; then
-      echo "Enabling RVM in init file $init_file"
-      __enable_rvm
+      enable_rvm
     fi
   done
-  __install_rvm_rubies
+  install_rvm_rubies
 }
 
 setup_all() {
