@@ -7,9 +7,12 @@ config() {
 }
 
 install_packages() {
-  echo "Installing packages to build Ruby..."
+  echo "Updating Aptitude..."
   sudo apt-get update
+  echo "Installing packages to build Ruby..."
   sudo apt-get install -y build-essential zlib1g zlib1g-dev libssl-dev openssl libreadline5-dev openssh-server openssh-client ssh wget
+  echo "Installing packages recommended by RVM..."
+  sudo apt-get install -y bison libxml2-dev git-core
 }
 
 install_rvm() {
