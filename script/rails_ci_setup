@@ -7,23 +7,23 @@ config() {
 }
 
 install_packages() {
-  echo "Updating Aptitude..."
+  echo "RAILSCI: Updating Aptitude..."
   sudo apt-get update
-  echo "Installing packages to build Ruby..."
+  echo "RAILSCI: Installing packages to build Ruby..."
   sudo apt-get install -y build-essential zlib1g zlib1g-dev libssl-dev openssl libreadline5-dev openssh-server openssh-client ssh wget
-  echo "Installing packages recommended by RVM..."
+  echo "RAILSCI: Installing packages recommended by RVM..."
   sudo apt-get install -y bison libxml2-dev git-core
 }
 
 install_rvm() {
-  echo "Installing RVM..."
+  echo "RAILSCI: Installing RVM..."
   curl -O http://rvm.beginrescueend.com/releases/rvm-install-latest
   chmod a+x rvm-install-latest
   ./rvm-install-latest
 }
 
 enable_rvm() {
-  echo "Enabling RVM in init file $init_file"
+  echo "RAILSCI: Enabling RVM in init file $init_file"
   rvm_init="if [[ -s $HOME/.rvm/scripts/rvm ]] ; then source $HOME/.rvm/scripts/rvm ; fi"
   if rvm_line=$(grep '.rvm' $init_file); test -z "$rvm_line"; then
     echo $rvm_init >> $init_file
@@ -35,13 +35,13 @@ enable_rvm() {
 install_rvm_rubies() {
   for rvm_ruby in $rvm_rubies
   do
-    echo "Installing RVM ruby: $rvm_ruby"
+    echo "RAILSCI: Installing RVM ruby: $rvm_ruby"
     rvm install $rvm_ruby
   done
 }
 
 setup_rvm() {
-  echo "Setting up RVM..."
+  echo "RAILSCI: Setting up RVM..."
   install_rvm
   for init_file in ~/.bashrc ~/.bash_profile
   do
@@ -53,7 +53,7 @@ setup_rvm() {
 }
 
 setup_all() {
-  echo "Setting up Rails CI..."
+  echo "RAILSCI: Setting up Rails CI..."
   install_packages
   setup_rvm
 }
