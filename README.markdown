@@ -41,6 +41,7 @@ The following environment variable flags are useful for debugging failing steps 
 
     RAILSCI_NO_INSTALL_PACKAGES: if set, skip step to install packages.  Default: RAILSCI_NO_INSTALL_PACKAGES=false
     RAILSCI_NO_SETUP_RVM: if set, skip step to install RVM.  Default: RAILSCI_NO_SETUP_RVM=false
+    RAILSCI_NO_SETUP_CHEF: if set, skip step to install CHEF.  Default: RAILSCI_NO_SETUP_CHEF=false
 
 License
 =======

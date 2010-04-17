@@ -16,6 +16,7 @@ config() {
   RAILSCI_RVM_DEFAULT_RUBY=${RAILSCI_RVM_DEFAULT_RUBY:-'1.8.7-p174'}
   RAILSCI_NO_INSTALL_PACKAGES=${RAILSCI_NO_INSTALL_PACKAGES:-false}
   RAILSCI_NO_SETUP_RVM=${RAILSCI_NO_SETUP_RVM:-false}
+  RAILSCI_NO_SETUP_CHEF=${RAILSCI_NO_SETUP_CHEF:-false}
 }
 
 install_packages() {
@@ -54,6 +55,10 @@ install_rvm_rubies() {
   done
 }
 
+set_rvm_default_ruby() {
+  rvm --default use $RAILSCI_RVM_DEFAULT_RUBY
+}
+
 setup_rvm() {
   echo "RAILSCI: Setting up RVM..."
   install_rvm
@@ -64,6 +69,12 @@ setup_rvm() {
     fi
   done
   install_rvm_rubies
+  set_rvm_default_ruby
+}
+
+setup_chef() {
+  echo "RAILSCI: Setting up Chef..."
+  gem install chef
 }
 
 setup_all() {
@@ -73,6 +84,9 @@ setup_all() {
   fi
   if [[ ! $RAILSCI_NO_SETUP_RVM = true ]] ; then
     setup_rvm
+  fi
+  if [[ ! $RAILSCI_NO_SETUP_CHEF = true ]] ; then
+    setup_chef
   fi
 }
 
