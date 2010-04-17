@@ -65,7 +65,9 @@ setup_rvm() {
   for init_file in ~/.bashrc ~/.bash_profile
   do
     if [[ -e $init_file ]]; then
+      set +e  # turn off return code checking for now, failing with output 'tput: unknown terminal "unknown"'
       enable_rvm
+      set -e
     fi
   done
   install_rvm_rubies
