@@ -8,7 +8,7 @@
 set -o noclobber
 set -e
 set -o pipefail
-set -o nounset
+# set -o nounset # can't set this or it fails when loading default ubuntu .bashrc
 trap 'echo RAILSCI - create_ami: error on line $LINENO' ERR
 
 config() {
