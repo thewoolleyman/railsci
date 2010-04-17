@@ -43,7 +43,7 @@ enable_rvm() {
   fi
   # mount proc to avoid error message from sed: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559539
   sudo mount -t proc none /proc/
-  sed -i'.bak' -e 's/ && return.*$//' $init_file
+  sed -i'.bak' -e 's/^.*&& return.*$//' $init_file
   source $init_file
 }
 
