@@ -1,9 +1,21 @@
 #!/usr/bin/env bash
 
+#  Rails CI - rails_ci_setup - http://github.com/thewoolleyman/railsci
+#  Script to automatically configure an EC2 EBS boot AMI which will run the standard Ruby on Rails Continuous Integration build.
+#  Intended to be automatically downloaded and called as a custom setup script from AMIBUILDER - http://github.com/thewoolleyman/amibuilder
+#  Copyright (c) 2010 Chad Woolley - The MIT License
+
+set -o noclobber
+set -e
+set -o pipefail
+set -o nounset
+trap 'echo RAILSCI - create_ami: error on line $LINENO' ERR
+
 config() {
-  rvm_rubies=${RVM_RUBIES:-'1.8.6 1.8.7 1.9.2'}
-  config_dir=~/.railsci
-  mkdir -p $config_dir
+  RAILSCI_RVM_RUBIES=${RAILSCI_RVM_RUBIES:-'1.8.7-p174 1.9.2'}
+  RAILSCI_RVM_DEFAULT_RUBY=${RAILSCI_RVM_DEFAULT_RUBY:-'1.8.7-p174'}
+  RAILSCI_NO_INSTALL_PACKAGES=${RAILSCI_NO_INSTALL_PACKAGES:-false}
+  RAILSCI_NO_SETUP_RVM=${RAILSCI_NO_SETUP_RVM:-false}
 }
 
 install_packages() {
@@ -35,7 +47,7 @@ enable_rvm() {
 }
 
 install_rvm_rubies() {
-  for rvm_ruby in $rvm_rubies
+  for rvm_ruby in $RAILSCI_RVM_RUBIES
   do
     echo "RAILSCI: Installing RVM ruby: $rvm_ruby"
     rvm install $rvm_ruby
@@ -56,8 +68,12 @@ setup_rvm() {
 
 setup_all() {
   echo "RAILSCI: Setting up Rails CI..."
-  install_packages
-  setup_rvm
+  if [[ ! $RAILSCI_NO_INSTALL_PACKAGES = true ]] ; then
+    install_packages
+  fi
+  if [[ ! $RAILSCI_NO_SETUP_RVM = true ]] ; then
+    setup_rvm
+  fi
 }
 
 config
