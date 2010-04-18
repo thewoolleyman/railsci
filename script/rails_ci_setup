@@ -60,7 +60,12 @@ install_rvm_rubies() {
 }
 
 set_rvm_default_ruby() {
+  echo "RAILSCI: Setting RVM default ruby: $RAILSCI_RVM_DEFAULT_RUBY"
+  set +e
   rvm --default use $RAILSCI_RVM_DEFAULT_RUBY
+  echo "RC=$?"
+  set -e
+  echo "RAILSCI: Finished setting RVM default ruby: $RAILSCI_RVM_DEFAULT_RUBY"
 }
 
 setup_rvm() {
