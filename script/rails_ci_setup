@@ -12,11 +12,16 @@ set -o pipefail
 trap 'echo RAILSCI - create_ami: error on line $LINENO' ERR
 
 config() {
-  RAILSCI_RVM_RUBIES=${RAILSCI_RVM_RUBIES:-'1.8.7-p174 1.9.2'}
+  # Configuration options
+  RAILSCI_RVM_RUBIES=${RAILSCI_RVM_RUBIES:-'1.8.7-p174 1.9.2-head'}
   RAILSCI_RVM_DEFAULT_RUBY=${RAILSCI_RVM_DEFAULT_RUBY:-'1.8.7-p174'}
+  RAILSCI_CHEF_SOLO_CONFIG_URL=${RAILSCI_CHEF_SOLO_CONFIG_URL:-'http://github.com/thewoolleyman/railsci/raw/master/chef/solo.rb'}
+
+  # Debugging Options
   RAILSCI_NO_INSTALL_PACKAGES=${RAILSCI_NO_INSTALL_PACKAGES:-false}
   RAILSCI_NO_SETUP_RVM=${RAILSCI_NO_SETUP_RVM:-false}
-  RAILSCI_NO_SETUP_CHEF=${RAILSCI_NO_SETUP_CHEF:-false}
+  RAILSCI_NO_INSTALL_CHEF=${RAILSCI_NO_INSTALL_CHEF:-false}
+  RAILSCI_NO_RUN_CHEF=${RAILSCI_NO_RUN_CHEF:-false}
 }
 
 install_packages() {
@@ -84,10 +89,17 @@ setup_rvm() {
   echo "RAILSCI: Finished setting up RVM..."
 }
 
-setup_chef() {
-  echo "RAILSCI: Setting up Chef..."
+install_chef() {
+  echo "RAILSCI: Installing Chef..."
   gem install chef
-  echo "RAILSCI: Finished setting up Chef..."
+  echo "RAILSCI: Finished installing Chef..."
+}
+
+run_chef() {
+  echo "RAILSCI: Running Chef Solo..."
+  wget -O ~/solo.rb $RAILSCI_CHEF_SOLO_CONFIG_URL
+  
+  echo "RAILSCI: Finished running Chef Solo..."
 }
 
 setup_all() {
@@ -98,8 +110,11 @@ setup_all() {
   if [[ ! $RAILSCI_NO_SETUP_RVM = true ]] ; then
     setup_rvm
   fi
-  if [[ ! $RAILSCI_NO_SETUP_CHEF = true ]] ; then
-    setup_chef
+  if [[ ! $RAILSCI_NO_INSTALL_CHEF = true ]] ; then
+    install_chef
+  fi
+  if [[ ! $RAILSCI_NO_RUN_CHEF = true ]] ; then
+    run_chef
   fi
 }
 

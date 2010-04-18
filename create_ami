@@ -20,10 +20,12 @@ create_ami() {
   
   AMIBUILDER_URL=${AMIBUILDER_URL:-'http://github.com/thewoolleyman/amibuilder/raw/master/amibuilder'}
   AMIBUILDER_CUSTOM_SETUP_URL=${AMIBUILDER_CUSTOM_SETUP_URL:-'http://github.com/thewoolleyman/railsci/raw/master/script/rails_ci_setup'}
+  
   AMIBUILDER_CUSTOM_SETUP_VARS=${AMIBUILDER_CUSTOM_SETUP_VARS:-''}
+  RAILSCI_AMIBUILDER_VARS=${RAILSCI_AMIBUILDER_VARS:-''}
   wget -O /tmp/amibuilder $AMIBUILDER_URL
   chmod a+x /tmp/amibuilder
-  /tmp/amibuilder
+  eval "$RAILSCI_AMIBUILDER_VARS /tmp/amibuilder"
 }
 
 create_ami
