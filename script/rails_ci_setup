@@ -26,6 +26,7 @@ install_packages() {
   sudo apt-get install -y build-essential zlib1g zlib1g-dev libssl-dev openssl libreadline5-dev openssh-server openssh-client ssh wget
   echo "RAILSCI: Installing packages recommended by RVM..."
   sudo apt-get install -y bison libxml2-dev git-core
+  echo "RAILSCI: Finished updating Aptitude..."
 }
 
 install_rvm() {
@@ -33,6 +34,7 @@ install_rvm() {
   curl -O http://rvm.beginrescueend.com/releases/rvm-install-latest
   chmod a+x rvm-install-latest
   ./rvm-install-latest
+  echo "RAILSCI: Finished installing RVM..."
 }
 
 enable_rvm() {
@@ -45,6 +47,7 @@ enable_rvm() {
   # sudo mount -t proc none /proc/  # comment for now, fails if proc already mounted
   sed -i'.bak' -e 's/^.*&& return.*$//' $init_file
   source $init_file
+  echo "RAILSCI: Finished enabling RVM in init file $init_file"
 }
 
 install_rvm_rubies() {
@@ -52,6 +55,7 @@ install_rvm_rubies() {
   do
     echo "RAILSCI: Installing RVM ruby: $rvm_ruby"
     rvm install $rvm_ruby
+    echo "RAILSCI: Finished nstalling RVM ruby: $rvm_ruby"
   done
 }
 
@@ -72,11 +76,13 @@ setup_rvm() {
   done
   install_rvm_rubies
   set_rvm_default_ruby
+  echo "RAILSCI: Finished setting up RVM..."
 }
 
 setup_chef() {
   echo "RAILSCI: Setting up Chef..."
   gem install chef
+  echo "RAILSCI: Finished setting up Chef..."
 }
 
 setup_all() {
