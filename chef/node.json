@@ -1,0 +1,6 @@
+{
+  "mysql": {
+    "server_root_password": ""
+  },
+  "recipes": [ "mysql", "mysql::client","mysql::server","mysql::server_ec2" ]
+}

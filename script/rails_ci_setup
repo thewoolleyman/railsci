@@ -16,6 +16,7 @@ config() {
   RAILSCI_RVM_RUBIES=${RAILSCI_RVM_RUBIES:-'1.8.7-p174 1.9.2-head'}
   RAILSCI_RVM_DEFAULT_RUBY=${RAILSCI_RVM_DEFAULT_RUBY:-'1.8.7-p174'}
   RAILSCI_CHEF_SOLO_CONFIG_URL=${RAILSCI_CHEF_SOLO_CONFIG_URL:-'http://github.com/thewoolleyman/railsci/raw/master/chef/solo.rb'}
+  RAILSCI_CHEF_SOLO_JSON_URL=${RAILSCI_CHEF_SOLO_JSON_URL:-'http://github.com/thewoolleyman/railsci/raw/master/chef/node.json'}
 
   # Debugging Options
   RAILSCI_NO_INSTALL_PACKAGES=${RAILSCI_NO_INSTALL_PACKAGES:-false}
@@ -97,8 +98,18 @@ install_chef() {
 
 run_chef() {
   echo "RAILSCI: Running Chef Solo..."
+  chef_file_cache_path='/tmp/chef_solo' # must match value in solo.rb
   wget -O ~/solo.rb $RAILSCI_CHEF_SOLO_CONFIG_URL
-  
+  wget -O ~/node.json $RAILSCI_CHEF_SOLO_JSON_URL
+  rm -rf $chef_file_cache_path
+  mkdir -p $chef_file_cache_path
+
+  opscode_cookbooks_url='http://github.com/opscode/cookbooks/tarball/master'
+  mkdir -p "$chef_file_cache_path/opscode_cookbooks"
+  wget -O - $opscode_cookbooks_url | tar -zxv -C "$chef_file_cache_path/opscode_cookbooks" --strip-components 1
+
+  echo "RAILSCI: Executing chef-solo command: 'rvmsudo chef-solo -c ~/solo.rb -j ~/node.json'"
+  rvmsudo chef-solo -c ~/solo.rb -j ~/node.json
   echo "RAILSCI: Finished running Chef Solo..."
 }
 

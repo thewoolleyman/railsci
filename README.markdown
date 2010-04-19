@@ -35,6 +35,8 @@ You can also specify multiple 'remote' environment variables in the 'AMIBUILDER\
 
     RAILSCI_RVM_RUBIES: Optional. Space-delimited list of RVM ruby interpreters to install.  Default: RAILSCI_RVM_RUBIES='1.8.7-p174 1.9.2'
     RAILSCI_RVM_DEFAULT_RUBY: Optional.  Ruby interpreter to set as default.  Default: RAILSCI_RVM_DEFAULT_RUBY='1.8.7-p174'
+    RAILSCI_CHEF_SOLO_CONFIG_URL: Optional.  URL to solo.rb (-c option to chef-solo).  Default: RAILSCI_CHEF_SOLO_CONFIG_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/solo.rb'
+    RAILSCI_CHEF_SOLO_JSON_URL: Optional.  URL to node.json (-j option to chef-solo).  Default: RAILSCI_CHEF_SOLO_JSON_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/node.json'
     
     
 Developers and Debugging
