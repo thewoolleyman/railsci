@@ -22,6 +22,8 @@ Create an updated/customized EBS boot AMI for Rails CI instance:
 
 Local environment variables.  You can set them yourself, or paste this into ~/.amibuilderrc and they will be read automatically (replace with your proper values).
 
+    # RAILSCI_CONFIG: Optional. Path to RAILSCI config.
+    export RAILSCI_CONFIG=~/.railscirc
     # AMIBUILDER_URL: Optional. URL of AMIBuilder release to be run
     export AMIBUILDER_URL='http://github.com/thewoolleyman/amibuilder/raw/master/amibuilder' 
     # AMIBUILDER_CUSTOM_SETUP_URL: Optional. URL of script containing Rails CI custom AMI setup which AMIBuilder will run automatically.
@@ -37,7 +39,7 @@ You can also specify multiple 'remote' environment variables in the 'AMIBUILDER\
     RAILSCI_RVM_DEFAULT_RUBY: Optional.  Ruby interpreter to set as default.  Default: RAILSCI_RVM_DEFAULT_RUBY='1.8.7-p174'
     RAILSCI_CHEF_SOLO_CONFIG_URL: Optional.  URL to solo.rb (-c option to chef-solo).  Default: RAILSCI_CHEF_SOLO_CONFIG_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/solo.rb'
     RAILSCI_CHEF_SOLO_JSON_URL: Optional.  URL to node.json (-j option to chef-solo).  Default: RAILSCI_CHEF_SOLO_JSON_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/node.json'
-    
+    RAILSCI_CHEF_REPO_URL: Optional. URL to Rails CI custom chef repo.  Default: RAILSCI_CHEF_REPO_URL'http://github.com/thewoolleyman/railsci_chef_repo/tarball/master'    
     
 Developers and Debugging
 ========================
