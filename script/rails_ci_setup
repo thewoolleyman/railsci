@@ -27,13 +27,16 @@ config() {
 }
 
 install_packages() {
+  echo "RAILSCI: Installing packages..."
   echo "RAILSCI: Updating Aptitude..."
   sudo apt-get update
   echo "RAILSCI: Installing packages to build Ruby..."
-  sudo apt-get install -y build-essential zlib1g zlib1g-dev libssl-dev openssl libreadline5-dev openssh-server openssh-client ssh wget
+  sudo apt-get install -y build-essential zlib1g zlib1g-dev libssl-dev openssl libreadline5-dev openssh-server openssh-client ssh wget git-core
   echo "RAILSCI: Installing packages recommended by RVM..."
   sudo apt-get install -y bison libxml2-dev git-core
-  echo "RAILSCI: Finished updating Aptitude..."
+  echo "RAILSCI: Installing additional packages required by rails build..."
+  sudo apt-get install -y bison libxml2-dev git-core
+  echo "RAILSCI: Finished installing packages..."
 }
 
 install_rvm() {
