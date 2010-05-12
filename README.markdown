@@ -1,7 +1,11 @@
 RAILS CI
 ========
 http://github.com/thewoolleyman/railsci - Chad Woolley - thewoolleyman@gmail.com
-Continuous Integration for the Ruby on Rails framework itself - http://ci.rubyonrails.org.  Contains a script to run an standard Rails CI Instance on EC2, and another script to build an updated or customized Rails CI AMI Image on EC2.  Uses AMIBUILDER - http://github.com/thewoolleyman/amibuilder - to build the AMI
+Continuous Integration for the Ruby on Rails framework itself - http://ci.rubyonrails.org.  Contains:
+
+* run\_rails\_ci\_instance: a script to run an standard Rails CI Instance on EC2
+* create\_ami: a script to build an updated or customized Rails CI AMI Image on EC2.  Uses AMIBUILDER - http://github.com/thewoolleyman/amibuilder - to build the AMI
+* install\_rails\_ci: a script to build a Rails CI instance under Ubuntu on a local box or Virtual Machine
 
 Running the standard Rails CI instance
 ======================================
@@ -49,6 +53,30 @@ The following environment variable flags are useful for debugging failing steps 
     RAILSCI_NO_SETUP_RVM: if set, skip step to install RVM.  Default: RAILSCI_NO_SETUP_RVM=false
     RAILSCI_NO_INSTALL_CHEF: if set, skip step to install CHEF.  Default: RAILSCI_NO_INSTALL_CHEF=false
     RAILSCI_NO_RUN_CHEF: if set, skip step to run CHEF.  Default: RAILSCI_NO_RUN_CHEF=false
+
+Installing on Local Virtual Machine
+===================================
+You can also run from your local machine, for example, to install on a VMWare instance with an Ubuntu install.
+
+To run the setup script locally, wget it and run the 'install\_rails\_ci' script.  You can set any of the RAILSCI\_ variables directly before invoking the script, or in $RAILSCI_CONFIG (~/.railscirc)
+
+For example, you could run the following after logging into a freshly installed Ubuntu virtual machine:
+
+    wget -O /tmp/install_rails_ci http://github.com/thewoolleyman/railsci/raw/master/install_rails_ci && chmod +x /tmp/install_rails_ci && /tmp/install_rails_ci
+    
+You could also download the scripts from your local machine if you want to debug or hack them.  For example, here's how you could serve them from a local rails instance:
+
+    # From host machine
+    cd
+    git clone http://github.com/thewoolleyman/railsci.git
+    rails webserver
+    cd webserver
+    ln -s ~/railsci/install_rails_ci public/install_rails_ci
+    ln -s ~/railsci/script/rails_ci_setup public/rails_ci_setup
+    script/server
+    
+    # From virtual machine
+    export RAILSCI_SETUP_URL='http://<host ip>:3000/webserver/rails_ci_setup' && wget -O /tmp/install_rails_ci && chmod +x /tmp/install_rails_ci && /tmp/install_rails_ci
 
 License
 =======

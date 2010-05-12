@@ -9,7 +9,7 @@ set -o noclobber
 set -e
 set -o pipefail
 # set -o nounset # can't set this or it fails when loading default ubuntu .bashrc
-trap 'echo RAILSCI - create_ami: error on line $LINENO' ERR
+trap 'echo RAILSCI - rails_ci_setup: error on line $LINENO' ERR
 
 config() {
   # Configuration options
@@ -32,9 +32,9 @@ install_packages() {
   sudo apt-get update
   echo "RAILSCI: Installing packages to build Ruby..."
   sudo apt-get install -y build-essential zlib1g zlib1g-dev libssl-dev openssl libreadline5-dev openssh-server openssh-client ssh wget git-core
+  echo "RAILSCI: Installing additional packages required for local install on a new machine..."
+  sudo apt-get install -y curl
   echo "RAILSCI: Installing packages recommended by RVM..."
-  sudo apt-get install -y bison libxml2-dev git-core
-  echo "RAILSCI: Installing additional packages required by rails build..."
   sudo apt-get install -y bison libxml2-dev git-core
   echo "RAILSCI: Finished installing packages..."
 }

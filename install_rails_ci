@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+#  Rails CI - create_rails_ci - http://github.com/thewoolleyman/railsci
+#  Script to automatically install the standard Ruby on Rails Continuous Integration build on the local machine
+#  Copyright (c) 2010 Chad Woolley - The MIT License
+
+set -o noclobber
+set -e
+set -o pipefail
+set -o nounset
+trap 'echo RAILSCI - install_rails_ci: error on line $LINENO' ERR
+
+
+install_rails_ci() {
+  railsci_config=${RAILSCI_CONFIG:-~/.railscirc}
+  if [ -e $railsci_config ]; then
+    source $railsci_config
+  fi
+  
+  RAILSCI_SETUP_URL=${RAILSCI_SETUP_URL:-'http://github.com/thewoolleyman/railsci/raw/master/script/rails_ci_setup'}
+  echo $RAILSCI_SETUP_URL
+  sleep 3 
+  
+  RAILSCI_SETUP_VARS=${RAILSCI_SETUP_VARS:-''}
+  wget -O /tmp/rails_ci_setup $RAILSCI_SETUP_URL
+  chmod a+x /tmp/rails_ci_setup
+  eval "$RAILSCI_SETUP_VARS /tmp/rails_ci_setup"
+}
+
+install_rails_ci
