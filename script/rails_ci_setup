@@ -12,6 +12,12 @@ set -o pipefail
 trap 'echo RAILSCI - rails_ci_setup: error on line $LINENO' ERR
 
 config() {
+  # Read local ~/.railscirc, in case we are running script directly instead of via create_ami
+  railsci_config=${RAILSCI_CONFIG:-~/.railscirc}
+  if [ -e $railsci_config ]; then
+    source $railsci_config
+  fi
+  
   # Configuration options
   RAILSCI_RVM_RUBIES=${RAILSCI_RVM_RUBIES:-'1.8.7-p174 1.9.2-head'}
   RAILSCI_RVM_DEFAULT_RUBY=${RAILSCI_RVM_DEFAULT_RUBY:-'1.8.7-p174'}
