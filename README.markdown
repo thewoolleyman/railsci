@@ -48,8 +48,8 @@ You can also specify multiple 'remote' environment variables in the 'AMIBUILDER\
     export RAILSCI_CHEF_SOLO_CONFIG_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/solo.rb'
     # RAILSCI_CHEF_SOLO_JSON_URL: Optional.  URL to node.json (-j option to chef-solo).  Default: RAILSCI_CHEF_SOLO_JSON_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/node.json'
     export RAILSCI_CHEF_SOLO_JSON_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/node.json'
-    # RAILSCI_CHEF_REPO_URL: Optional. URL to Rails CI custom chef repo.  Default: RAILSCI_CHEF_REPO_URL'http://github.com/thewoolleyman/railsci_chef_repo/tarball/master'    
-    export RAILSCI_CHEF_REPO_URL'http://github.com/thewoolleyman/railsci_chef_repo/tarball/master'    
+    # RAILSCI_CHEF_REPO_URL: Optional. Git download URL to Rails CI custom chef repo.  Default: RAILSCI_CHEF_REPO_URL'git://github.com/thewoolleyman/railsci_chef_repo.git'    
+    export RAILSCI_CHEF_REPO_URL'git://github.com/thewoolleyman/railsci_chef_repo.git'
     
 Developers and Debugging
 ========================
