@@ -11,6 +11,6 @@
   "fqdn": "localhost.localdomain",
   "domain": "localdomain",
   "languages": {},
-  "recipes": [ "railsci" ]
+  "run_list": [ "recipe[rails_build_env]" ]
 }
 
