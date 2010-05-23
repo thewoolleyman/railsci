@@ -24,6 +24,7 @@ config() {
   RAILSCI_CHEF_SOLO_CONFIG_URL=${RAILSCI_CHEF_SOLO_CONFIG_URL:-'http://github.com/thewoolleyman/railsci/raw/master/chef/solo.rb'}
   RAILSCI_CHEF_SOLO_JSON_URL=${RAILSCI_CHEF_SOLO_JSON_URL:-'http://github.com/thewoolleyman/railsci/raw/master/chef/node.json'}
   RAILSCI_CHEF_REPO_URL=${RAILSCI_CHEF_REPO_URL:-'git://github.com/thewoolleyman/railsci_chef_repo.git'}
+  RAILSCI_CHEF_GEM_INSTALL_OPTIONS=${$RAILSCI_CHEF_GEM_INSTALL_OPTIONS:-''}
 
   # Debugging Options
   RAILSCI_NO_INSTALL_PACKAGES=${RAILSCI_NO_INSTALL_PACKAGES:-false}
@@ -103,7 +104,7 @@ setup_rvm() {
 
 install_chef() {
   echo "RAILSCI: Installing Chef..."
-  gem install chef
+  gem install chef $RAILSCI_CHEF_GEM_INSTALL_OPTIONS
   echo "RAILSCI: Finished installing Chef..."
 }
 

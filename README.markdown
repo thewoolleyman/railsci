@@ -48,8 +48,10 @@ You can also specify multiple 'remote' environment variables in the 'AMIBUILDER\
     export RAILSCI_CHEF_SOLO_CONFIG_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/solo.rb'
     # RAILSCI_CHEF_SOLO_JSON_URL: Optional.  URL to node.json (-j option to chef-solo).  Default: RAILSCI_CHEF_SOLO_JSON_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/node.json'
     export RAILSCI_CHEF_SOLO_JSON_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/node.json'
-    # RAILSCI_CHEF_REPO_URL: Optional. Git download URL to Rails CI custom chef repo.  Default: RAILSCI_CHEF_REPO_URL'git://github.com/thewoolleyman/railsci_chef_repo.git'    
-    export RAILSCI_CHEF_REPO_URL'git://github.com/thewoolleyman/railsci_chef_repo.git'
+    # RAILSCI_CHEF_REPO_URL: Optional. Git download URL to Rails CI custom chef repo.  Default: RAILSCI_CHEF_REPO_URL='git://github.com/thewoolleyman/railsci_chef_repo.git'    
+    export RAILSCI_CHEF_REPO_URL='git://github.com/thewoolleyman/railsci_chef_repo.git'
+    # RAILSCI_CHEF_GEM_INSTALL_OPTIONS: Optional. Options to pass to 'gem install chef'.  Useful if you want to install a custom or prerelease Chef gem.  Default: RAILSCI_CHEF_REPO_URL=''    
+    export RAILSCI_CHEF_GEM_INSTALL_OPTIONS=''
     
 Developers and Debugging
 ========================
