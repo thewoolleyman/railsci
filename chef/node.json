@@ -2,7 +2,15 @@
   "mysql": {
     "server_root_password": ""
   },
+  "ec2": "true",
   "ipaddress": "192.168.1.1",
+  "platform": "ubuntu",
+  "platform_version": "10.04",
+  "cpu": {},
+  "hostname": "localhost.localdomain",
+  "fqdn": "localhost.localdomain",
+  "domain": "localdomain",
+  "languages": {},
   "recipes": [ "railsci" ]
 }
 
