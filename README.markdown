@@ -42,20 +42,25 @@ they will be read automatically (replace with your proper values).
 
 You can also specify multiple 'remote' environment variables in the 'AMIBUILDER\_CUSTOM\_SETUP\_VARS' variable.  This is because AMIBUILDER remotely downloads and runs the script from 'AMIBUILDER\_CUSTOM\_SETUP\_URL', which points to 'rails\_ci\_setup' by default.  The following variables are supported by 'rails\_ci\_setup':
 
-    RAILSCI_RVM_RUBIES: Optional. Space-delimited list of RVM ruby interpreters to install.  Default: RAILSCI_RVM_RUBIES='1.8.7-p174 1.9.2'
-    RAILSCI_RVM_DEFAULT_RUBY: Optional.  Ruby interpreter to set as default.  Default: RAILSCI_RVM_DEFAULT_RUBY='1.8.7-p174'
-    RAILSCI_CHEF_SOLO_CONFIG_URL: Optional.  URL to solo.rb (-c option to chef-solo).  Default: RAILSCI_CHEF_SOLO_CONFIG_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/solo.rb'
-    RAILSCI_CHEF_SOLO_JSON_URL: Optional.  URL to node.json (-j option to chef-solo).  Default: RAILSCI_CHEF_SOLO_JSON_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/node.json'
-    RAILSCI_CHEF_REPO_URL: Optional. URL to Rails CI custom chef repo.  Default: RAILSCI_CHEF_REPO_URL'http://github.com/thewoolleyman/railsci_chef_repo/tarball/master'    
+    # RAILSCI_RVM_RUBIES: Optional. Space-delimited list of RVM ruby interpreters to install.  Default: RAILSCI_RVM_RUBIES='1.8.7-p174 1.9.2'
+    RAILSCI_RVM_DEFAULT_RUBY='1.8.7-p174'
+    # RAILSCI_CHEF_SOLO_CONFIG_URL: Optional.  URL to solo.rb (-c option to chef-solo).  Default: RAILSCI_CHEF_SOLO_CONFIG_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/solo.rb'
+    RAILSCI_CHEF_SOLO_JSON_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/node.json'
+    # RAILSCI_CHEF_REPO_URL: Optional. URL to Rails CI custom chef repo.  Default: RAILSCI_CHEF_REPO_URL'http://github.com/thewoolleyman/railsci_chef_repo/tarball/master'    
+    RAILSCI_CHEF_REPO_URL'http://github.com/thewoolleyman/railsci_chef_repo/tarball/master'    
     
 Developers and Debugging
 ========================
 The following environment variable flags are useful for debugging failing steps of the build without performing a full run each time.  These are also passed in 'AMIBUILDER\_CUSTOM\_SETUP\_VARS'.  Also see the supported AMIBUILDER debugging flags at http://github.com/thewoolleyman/amibuilder
 
-    RAILSCI_NO_INSTALL_PACKAGES: if set, skip step to install packages.  Default: RAILSCI_NO_INSTALL_PACKAGES=false
-    RAILSCI_NO_SETUP_RVM: if set, skip step to install RVM.  Default: RAILSCI_NO_SETUP_RVM=false
-    RAILSCI_NO_INSTALL_CHEF: if set, skip step to install CHEF.  Default: RAILSCI_NO_INSTALL_CHEF=false
-    RAILSCI_NO_RUN_CHEF: if set, skip step to run CHEF.  Default: RAILSCI_NO_RUN_CHEF=false
+    # RAILSCI_NO_INSTALL_PACKAGES: if set, skip step to install packages.  Default: RAILSCI_NO_INSTALL_PACKAGES=false
+    RAILSCI_NO_INSTALL_PACKAGES=false
+    # RAILSCI_NO_SETUP_RVM: if set, skip step to install RVM.  Default: RAILSCI_NO_SETUP_RVM=false
+    RAILSCI_NO_SETUP_RVM=false
+    # RAILSCI_NO_INSTALL_CHEF: if set, skip step to install CHEF.  Default: RAILSCI_NO_INSTALL_CHEF=false
+    RAILSCI_NO_INSTALL_CHEF=false
+    # RAILSCI_NO_RUN_CHEF: if set, skip step to run CHEF.  Default: RAILSCI_NO_RUN_CHEF=false
+    RAILSCI_NO_RUN_CHEF=false
 
 Installing on Local Virtual Machine
 ===================================
