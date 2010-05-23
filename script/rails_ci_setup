@@ -34,8 +34,8 @@ install_packages() {
   sudo apt-get install -y build-essential zlib1g zlib1g-dev libssl-dev openssl libreadline5-dev openssh-server openssh-client ssh wget git-core
   echo "RAILSCI: Installing additional packages required for local install on a new machine..."
   sudo apt-get install -y curl
-  echo "RAILSCI: Installing packages recommended by RVM..."
-  sudo apt-get install -y bison libxml2-dev git-core
+  echo "RAILSCI: Installing packages used/recommended by RVM..."
+  sudo apt-get install -y bison libxml2-dev git-core subversion
   echo "RAILSCI: Finished installing packages..."
 }
 
