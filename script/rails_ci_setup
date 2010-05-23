@@ -29,6 +29,7 @@ config() {
   RAILSCI_NO_INSTALL_PACKAGES=${RAILSCI_NO_INSTALL_PACKAGES:-false}
   RAILSCI_NO_SETUP_RVM=${RAILSCI_NO_SETUP_RVM:-false}
   RAILSCI_NO_INSTALL_CHEF=${RAILSCI_NO_INSTALL_CHEF:-false}
+  RAILSCI_NO_DOWNLOAD_CHEF_CONFIG=${RAILSCI_NO_DOWNLOAD_CHEF_CONFIG:-false}
   RAILSCI_NO_RUN_CHEF=${RAILSCI_NO_RUN_CHEF:-false}
 }
 
@@ -106,8 +107,8 @@ install_chef() {
   echo "RAILSCI: Finished installing Chef..."
 }
 
-run_chef() {
-  echo "RAILSCI: Running Chef Solo..."
+download_chef_config() {
+  echo "RAILSCI: Downloading Chef Config..."
   chef_file_cache_path='/tmp/chef_solo' # must match value in solo.rb
   wget -O ~/solo.rb $RAILSCI_CHEF_SOLO_CONFIG_URL
   wget -O ~/node.json $RAILSCI_CHEF_SOLO_JSON_URL
@@ -120,7 +121,11 @@ run_chef() {
   
   mkdir -p "$chef_file_cache_path/railsci_chef_repo"
   wget -O - $RAILSCI_CHEF_REPO_URL | tar -zxv -C "$chef_file_cache_path/railsci_chef_repo" --strip-components 1
+  echo "RAILSCI: Finished Downloading Chef Config..."
+}
 
+run_chef() {
+  echo "RAILSCI: Running Chef Solo..."
   echo "RAILSCI: Executing chef-solo command: 'rvmsudo chef-solo -c ~/solo.rb -j ~/node.json'"
   rvmsudo chef-solo -c ~/solo.rb -j ~/node.json
   echo "RAILSCI: Finished running Chef Solo..."
@@ -136,6 +141,9 @@ setup_all() {
   fi
   if [[ ! $RAILSCI_NO_INSTALL_CHEF = true ]] ; then
     install_chef
+  fi
+  if [[ ! $RAILSCI_NO_DOWNLOAD_CHEF_CONFIG = true ]] ; then
+    download_chef_config 
   fi
   if [[ ! $RAILSCI_NO_RUN_CHEF = true ]] ; then
     run_chef

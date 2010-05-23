@@ -59,6 +59,8 @@ The following environment variable flags are useful for debugging failing steps 
     export RAILSCI_NO_SETUP_RVM=false
     # RAILSCI_NO_INSTALL_CHEF: if set, skip step to install CHEF.  Default: RAILSCI_NO_INSTALL_CHEF=false
     export RAILSCI_NO_INSTALL_CHEF=false
+    # RAILSCI_NO_DOWNLOAD_CHEF_CONFIG: if set, skip step to download custom chef configs and repos.  Default: RAILSCI_NO_DOWNLOAD_CHEF_CONFIG=false
+    export RAILSCI_NO_DOWNLOAD_CHEF_CONFIG=false
     # RAILSCI_NO_RUN_CHEF: if set, skip step to run CHEF.  Default: RAILSCI_NO_RUN_CHEF=false
     export RAILSCI_NO_RUN_CHEF=false
 
