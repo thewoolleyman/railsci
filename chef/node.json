@@ -2,24 +2,7 @@
   "mysql": {
     "server_root_password": ""
   },
-  "recipes": [ "mysql::server","mysql::server_ec2","sqlite","postgresql::server" ]
+  "ipaddress": "192.168.1.1",
+  "recipes": [ "railsci" ]
 }
 
-/* 
-packages required for rails ci:
-
-mysql-server-5.0
-sqlite
-libsqlite-dev
-sqlite3
-libsqlite3-dev
-libmysqlclient-dev
-postgresql
-postgresql-server-dev-8.3
-libfcgi-dev
-memcached
-libxml2
-libxml2-dev
-libxslt1
-libxslt1-dev
-*/
