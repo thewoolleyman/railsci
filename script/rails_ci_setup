@@ -23,7 +23,7 @@ config() {
   RAILSCI_RVM_DEFAULT_RUBY=${RAILSCI_RVM_DEFAULT_RUBY:-'1.8.7-p174'}
   RAILSCI_CHEF_SOLO_CONFIG_URL=${RAILSCI_CHEF_SOLO_CONFIG_URL:-'http://github.com/thewoolleyman/railsci/raw/master/chef/solo.rb'}
   RAILSCI_CHEF_SOLO_JSON_URL=${RAILSCI_CHEF_SOLO_JSON_URL:-'http://github.com/thewoolleyman/railsci/raw/master/chef/node.json'}
-  RAILSCI_CHEF_REPO_URL=${RAILSCI_CHEF_REPO_URL:-'http://github.com/thewoolleyman/railsci_chef_repo/tarball/master'}
+  RAILSCI_CHEF_REPO_URL=${RAILSCI_CHEF_REPO_URL:-'git://github.com/thewoolleyman/railsci_chef_repo.git'}
 
   # Debugging Options
   RAILSCI_NO_INSTALL_PACKAGES=${RAILSCI_NO_INSTALL_PACKAGES:-false}
@@ -115,12 +115,8 @@ download_chef_config() {
   rm -rf $chef_file_cache_path
   mkdir -p $chef_file_cache_path
 
-  opscode_cookbooks_url='http://github.com/opscode/cookbooks/tarball/master'
-  mkdir -p "$chef_file_cache_path/opscode_cookbooks"
-  wget -O - $opscode_cookbooks_url | tar -zxv -C "$chef_file_cache_path/opscode_cookbooks" --strip-components 1
-  
-  mkdir -p "$chef_file_cache_path/railsci_chef_repo"
-  wget -O - $RAILSCI_CHEF_REPO_URL | tar -zxv -C "$chef_file_cache_path/railsci_chef_repo" --strip-components 1
+  git clone $RAILSCI_CHEF_REPO_URL $chef_file_cache_path/railsci_chef_repo
+  cd $chef_file_cache_path/railsci_chef_repo && git submodule update --init
   echo "RAILSCI: Finished Downloading Chef Config..."
 }
 
