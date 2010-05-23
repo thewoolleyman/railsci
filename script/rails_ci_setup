@@ -105,7 +105,7 @@ setup_rvm() {
 
 install_chef() {
   echo "RAILSCI: Installing Chef..."
-  gem install chef $RAILSCI_CHEF_GEM_INSTALL_OPTIONS
+  gem install chef $RAILSCI_CHEF_GEM_INSTALL_OPTIONS --no-ri --no-rdoc
   echo "RAILSCI: Finished installing Chef..."
 }
 
