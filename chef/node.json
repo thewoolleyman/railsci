@@ -3,6 +3,9 @@
     "server_root_password": ""
   },
   "ec2": "true",
+  "tomcat6": {
+    "java_home": "/usr/lib/jvm/java-6-sun"
+  },
   "ipaddress": "192.168.1.1",
   "platform": "ubuntu",
   "platform_version": "10.04",
