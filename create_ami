@@ -25,6 +25,7 @@ create_ami() {
   RAILSCI_AMIBUILDER_VARS=${RAILSCI_AMIBUILDER_VARS:-''}
   wget -O /tmp/amibuilder $AMIBUILDER_URL
   chmod a+x /tmp/amibuilder
+  echo "Running: $RAILSCI_AMIBUILDER_VARS /tmp/amibuilder"
   eval "$RAILSCI_AMIBUILDER_VARS /tmp/amibuilder"
 }
 
