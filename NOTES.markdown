@@ -25,3 +25,10 @@ Dev Environment Setup
 EC2 AMI Setup Notes:
 ================
 * Creating image: http://github.com/thewoolleyman/amibuilder
+
+TODO:
+=====
+Understand and use chef server to do all this, e.g.:
+
+http://www.slideshare.net/rberger/chef-08-knife-and-amazon-ec2
+http://blog.ibd.com/scalable-deployment/creating-an-amazon-ami-for-chef-0-8/
