@@ -3,6 +3,9 @@
     "server_root_password": ""
   },
   "ec2": "true",
+  "teamcity": {
+    "user": "ubuntu"
+  },
   "ipaddress": "192.168.1.1",
   "platform": "ubuntu",
   "platform_version": "10.04",
@@ -13,8 +16,10 @@
   "languages": {},
   "run_list": [
     "recipe[rails_build_env]",
+    "recipe[java_sun]",
     "recipe[teamcity]",
-    "recipe[chroot]"
+    "recipe[chroot]",
+    "recipe[railsci_post_setup]"
   ]
 }
 
