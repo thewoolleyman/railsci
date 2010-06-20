@@ -48,7 +48,7 @@ the [Rails CI Chef Repo](http://github.com/thewoolleyman/railsci_chef_repo).  Th
 Rails CI environment without rebuilding it:
 
     cd ~/chef/railsci_chef_repo
-    git pull # Or checkout from your own fork
+    git pull && git submodule update # Or checkout from your own fork
     chef-solo -c ~/solo.rb -j ~/node.json
 
 Environment Variables to cuistomize how the Rails CI server Will Be Built
