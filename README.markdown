@@ -7,8 +7,8 @@ Continuous Integration for the Ruby on Rails framework itself - http://ci.rubyon
 * create\_ami: a script to build an updated or customized Rails CI AMI Image on EC2.  Uses AMIBUILDER - http://github.com/thewoolleyman/amibuilder - to build the AMI
 * install\_rails\_ci: a script to build a Rails CI instance under Ubuntu on a local box or Virtual Machine
 
-Running the standard Rails CI instance
-======================================
+Running the standard Rails CI instance on a new EC2 instance
+============================================================
 Run a Rails CI instance:
 
     ./run_rails_ci_instance
@@ -17,6 +17,16 @@ Environment variables (~/.railscirc is automatically read):
 
     # RAILSCI_AMI:Optional. ID of Rails CI AMI to use
     RAILSCI_AMI='ami-0d729464'
+
+
+Running the standard Rails CI instance on a local box or virtual machine
+========================================================================
+Install Ubuntu 10.04 Server on a clean local box or virtual machine
+
+Log in or SSH to the new box and do the following:
+
+    wget -O /tmp/rails_ci_setup http://github.com/thewoolleyman/railsci/raw/master/script/rails_ci_setup
+    bash /tmp/rails_ci_setup
 
 Creating an updated or customized Rails CI AMI
 ==============================================
