@@ -42,7 +42,7 @@ install_packages() {
   echo "RAILSCI: Installing additional packages required for local install on a new machine..."
   sudo apt-get install -y curl
   echo "RAILSCI: Installing packages used/recommended by RVM..."
-  sudo apt-get install -y bison libxml2-dev git-core subversion
+  sudo apt-get install -y bison libxml2-dev git-core subversion autoconf
   echo "RAILSCI: Finished installing packages..."
 }
 
