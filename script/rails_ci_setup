@@ -22,8 +22,6 @@ config() {
   RAILSCI_RVM_RUBIES=${RAILSCI_RVM_RUBIES:-'1.8.7-p174 1.9.2-head'}
   RAILSCI_RVM_DEFAULT_RUBY=${RAILSCI_RVM_DEFAULT_RUBY:-'1.8.7-p174'}
   RAILSCI_CHEF_DIR=${RAILSCI_CHEF_DIR:-$HOME/chef}
-  RAILSCI_CHEF_SOLO_CONFIG_URL=${RAILSCI_CHEF_SOLO_CONFIG_URL:-'http://github.com/thewoolleyman/railsci/raw/master/chef/solo.rb'}
-  RAILSCI_CHEF_SOLO_JSON_URL=${RAILSCI_CHEF_SOLO_JSON_URL:-'http://github.com/thewoolleyman/railsci/raw/master/chef/node.json'}
   RAILSCI_CHEF_REPO_URL=${RAILSCI_CHEF_REPO_URL:-'git://github.com/thewoolleyman/railsci_chef_repo.git'}
   RAILSCI_CHEF_GEM_INSTALL_OPTIONS=${RAILSCI_CHEF_GEM_INSTALL_OPTIONS:-''}
 
@@ -111,20 +109,18 @@ install_chef() {
 
 download_chef_config() {
   echo "RAILSCI: Downloading Chef Config..."
-  wget -O ~/solo.rb $RAILSCI_CHEF_SOLO_CONFIG_URL
-  wget -O ~/node.json $RAILSCI_CHEF_SOLO_JSON_URL
-  rm -rf $RAILSCI_CHEF_DIR
-  mkdir -p $RAILSCI_CHEF_DIR
 
-  git clone $RAILSCI_CHEF_REPO_URL $RAILSCI_CHEF_DIR/railsci_chef_repo
-  cd $RAILSCI_CHEF_DIR/railsci_chef_repo && git submodule update --init
+  if [ ! -e $RAILSCI_CHEF_DIR ]; then
+    mkdir -p $RAILSCI_CHEF_DIR
+    git clone $RAILSCI_CHEF_REPO_URL $RAILSCI_CHEF_DIR/railsci_chef_repo
+  fi
+  cd $RAILSCI_CHEF_DIR/railsci_chef_repo && git pull && git submodule update --init
   echo "RAILSCI: Finished Downloading Chef Config..."
 }
 
 run_chef() {
   echo "RAILSCI: Running Chef Solo..."
-  echo "RAILSCI: Executing chef-solo command: 'rvmsudo chef-solo -c ~/solo.rb -j ~/node.json'"
-  rvmsudo chef-solo -c ~/solo.rb -j ~/node.json
+  rvmsudo chef-solo -c $RAILSCI_CHEF_DIR/railsci_chef_repo/config/solo.rb -j $RAILSCI_CHEF_DIR/railsci_chef_repo/config/node.json
   echo "RAILSCI: Finished running Chef Solo..."
 }
 

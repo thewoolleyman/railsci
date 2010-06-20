@@ -49,8 +49,13 @@ Rails CI environment without rebuilding it:
 
     cd ~/chef/railsci_chef_repo
     git pull && git submodule update # Or checkout from your own fork
-    chef-solo -c ~/solo.rb -j ~/node.json
+    rvmsudo chef-solo -c ~/chef/railsci_chef_repo/config/solo.rb -j ~/chef/railsci_chef_repo/config/node.json
 
+You can also use git to switch ~/chef/railsci\_chef\_repo to a local checkout of your remote 
+fork of [railsci\_chef\_repo](http://github.com/thewoolleyman/railsci_chef_repo), so you can
+check in your changes and [open issues](http://github.com/thewoolleyman/railsci_chef_repo/issues) or 
+send pull requests for your improvements and fixes.
+    
 Environment Variables to cuistomize how the Rails CI server Will Be Built
 =========================================================================
 The following variables are supported by 'rails\_ci\_setup':
@@ -59,10 +64,6 @@ The following variables are supported by 'rails\_ci\_setup':
     export RAILSCI_RVM_DEFAULT_RUBY='1.8.7-p174'
     # RAILSCI_CHEF_DIR: Optional.  Directory in which to store the Chef repo.  Default: RAILSCI_CHEF_DIR=$HOME/chef
     export RAILSCI_CHEF_DIR=$HOME/chef
-    # RAILSCI_CHEF_SOLO_CONFIG_URL: Optional.  URL to solo.rb (-c option to chef-solo).  Default: RAILSCI_CHEF_SOLO_CONFIG_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/solo.rb'
-    export RAILSCI_CHEF_SOLO_CONFIG_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/solo.rb'
-    # RAILSCI_CHEF_SOLO_JSON_URL: Optional.  URL to node.json (-j option to chef-solo).  Default: RAILSCI_CHEF_SOLO_JSON_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/node.json'
-    export RAILSCI_CHEF_SOLO_JSON_URL='http://github.com/thewoolleyman/railsci/raw/master/chef/node.json'
     # RAILSCI_CHEF_REPO_URL: Optional. Git download URL to Rails CI custom chef repo.  Default: RAILSCI_CHEF_REPO_URL='git://github.com/thewoolleyman/railsci_chef_repo.git'    
     export RAILSCI_CHEF_REPO_URL='git://github.com/thewoolleyman/railsci_chef_repo.git'
     # RAILSCI_CHEF_GEM_INSTALL_OPTIONS: Optional. Options to pass to 'gem install chef'.  Useful if you want to install a custom or prerelease Chef gem, e.g. ''--version=x.y.z.a1 --source=http://my.gem.server --prerelease'  Default: RAILSCI_CHEF_REPO_URL=''    
@@ -100,6 +101,7 @@ Environment Variables for Developers and Debugging
 The 'rails\_ci\_setup' script itself should rarely need to be changed, unless it is being ported to a new platform, distro, 
 or release.  This section will help you when it necessary.
 
+
 The following environment variable flags are useful for debugging failing steps of the CI server build without performing a full run each time.  For EC2 AMI builds, these 
 are also passed in 'AMIBUILDER\_CUSTOM\_SETUP\_VARS'.  Also see the supported [AMIBUILDER debugging flags](http://github.com/thewoolleyman/amibuilder)
 
@@ -114,26 +116,10 @@ are also passed in 'AMIBUILDER\_CUSTOM\_SETUP\_VARS'.  Also see the supported [A
     # RAILSCI_NO_RUN_CHEF: if set, skip step to run CHEF.  Default: RAILSCI_NO_RUN_CHEF=false
     export RAILSCI_NO_RUN_CHEF=false
 
-You can hack the 'rails\_ci\_setup' script directly on the virtual machine.  Just make sure you use git to 
-switch ~/chef/railsci\_chef\_repo to a local checkout your remote fork of [railsci\_chef\_repo](http://github.com/thewoolleyman/railsci_chef_repo), so you can
-check in your changes and [open issues](http://github.com/thewoolleyman/railsci_chef_repo/issues) or 
+You can hack the 'rails\_ci\_setup' script directly on the virtual machine.  Use git to 
+checkout your remote fork of [railsci](http://github.com/thewoolleyman/railsci), so you can
+check in your changes and [open issues](http://github.com/thewoolleyman/railsci/issues) or 
 send pull requests for your improvements and fixes.
-
-You could also download the scripts from your local machine if you want to debug or hack them using your favorite editor
-locally (But this is slow and you are better off learning use vi and git from the machine itself).  For example, here's how you 
-could serve them from a local rails instance:
-
-    # From host development machine
-    cd
-    git clone http://github.com/thewoolleyman/railsci.git
-    rails webserver
-    cd webserver
-    ln -s ~/railsci/install_rails_ci public/install_rails_ci
-    ln -s ~/railsci/script/rails_ci_setup public/rails_ci_setup
-    script/server
-    
-    # From remote Rails CI virtual machine, box, or EC2 instance
-    export RAILSCI_SETUP_URL='http://<host ip>:3000/webserver/rails_ci_setup' && wget -O /tmp/install_rails_ci && chmod +x /tmp/install_rails_ci && /tmp/install_rails_ci
 
 License
 =======
