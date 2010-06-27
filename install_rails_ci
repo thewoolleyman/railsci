@@ -12,19 +12,43 @@ trap 'echo RAILSCI - install_rails_ci: error on line $LINENO' ERR
 
 
 install_rails_ci() {
+  echo "RAILSCI: Installing Rails CI"
   railsci_config=${RAILSCI_CONFIG:-~/.railscirc}
-  if [ -e $railsci_config ]; then
+  if [[ -e $railsci_config ]]; then
     source $railsci_config
   fi
+
+  RAILSCI_DIR=${RAILSCI_DIR:-~/railsci}
   
-  RAILSCI_SETUP_URL=${RAILSCI_SETUP_URL:-'http://github.com/thewoolleyman/railsci/raw/master/script/rails_ci_setup'}
-  echo $RAILSCI_SETUP_URL
-  sleep 3 
+  install_git
+  clone_repo
   
   RAILSCI_SETUP_VARS=${RAILSCI_SETUP_VARS:-''}
-  wget -O /tmp/rails_ci_setup $RAILSCI_SETUP_URL
-  chmod a+x /tmp/rails_ci_setup
-  eval "$RAILSCI_SETUP_VARS /tmp/rails_ci_setup"
+  eval "$RAILSCI_SETUP_VARS $RAILSCI_DIR/script/rails_ci_setup"
+}
+
+install_git() {
+  which git > /dev/null
+  if [[ $? == 0 ]]; then
+    echo "RAILSCI: Git already installed"
+  else
+    echo "RAILSCI: Installing git..."
+    echo "RAILSCI: Updating Aptitude..."
+    sudo apt-get update
+    echo "RAILSCI: Installing git package..."
+    sudo apt-get install -y git-core
+    echo "RAILSCI: Finished installing git..."
+  fi
+}
+
+clone_repo() {
+  if [[ -f $RAILSCI_DIR/script/rails_ci_setup || -d $RAILSCI_DIR ]]; then
+    echo "RAILSCI:" $RAILSCI_DIR/script/rails_ci_setup "already exists, not cloning."
+  else
+    RAILSCI_URL=${RAILSCI_URL:-'git://github.com/thewoolleyman/railsci.git'}
+    echo "RAILSCI: Cloning Rails CI git repo at" $RAILSCI_URL "to" $RAILSCI_DIR
+    git clone $RAILSCI_URL $RAILSCI_DIR
+  fi
 }
 
 install_rails_ci
