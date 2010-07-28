@@ -13,8 +13,11 @@ SERVERS
 
 EC2 Info
 ========
-* Current AMI: ???
+* Current Base AMI: ami-4b4ba522 - Ubuntu 10.04 LTS (Lucid Lynx) (us-east-1)
+* Current Rails CI AMI: ami-2d4aa444	(pre-boxbuilder)
 
+* Alestic AMI list: http://alestic.com/
+* Ubuntu AMI list: http://uec-images.ubuntu.com/releases/lucid/release/
 
 Dev Environment Setup
 =====================
