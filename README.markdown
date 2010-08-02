@@ -1,3 +1,6 @@
+* * **WARNING: THE SCRIPTS IN THIS REPO AND AMIBUILDER ARE DEPRECATED, AND BEING REWRITTEN HERE: [http://github.com/thewoolleyman/boxbuilder](http://github.com/thewoolleyman/boxbuilder).  The Chef Repo will still be used, however: [http://github.com/thewoolleyman/railsci_chef_repo](http://github.com/thewoolleyman/railsci_chef_repo) .  This README will be updated once boxbuilder is complete ** * * 
+================================================================================================================================
+
 RAILS CI
 ========
 http://github.com/thewoolleyman/railsci - Chad Woolley - thewoolleyman@gmail.com
