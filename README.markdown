@@ -1,20 +1,33 @@
-* * **WARNING: THE SCRIPTS IN THIS REPO AND AMIBUILDER ARE DEPRECATED, AND BEING REWRITTEN HERE: [http://github.com/thewoolleyman/boxbuilder](http://github.com/thewoolleyman/boxbuilder).  The Chef Repo will still be used, however: [http://github.com/thewoolleyman/railsci_chef_repo](http://github.com/thewoolleyman/railsci_chef_repo) .  This README will be updated once boxbuilder is complete ** * * 
-================================================================================================================================
-
 RAILS CI
 ========
 http://github.com/thewoolleyman/railsci - Chad Woolley - thewoolleyman@gmail.com
 
 Scripts to support Continuous Integration for the Ruby on Rails framework itself - [http://ci.rubyonrails.org](http://ci.rubyonrails.org):
 
-* run\_rails\_ci\_instance: a script to run an standard Rails CI Instance on EC2
-* create\_ami: a script to build an updated or customized Rails CI AMI Image on EC2.  Uses [AMIBUILDER](http://github.com/thewoolleyman/amibuilder) to build the AMI
-* install\_rails\_ci: a script to build a Rails CI instance under Ubuntu on a local box or Virtual Machine
+* railsci\_run\_ec2\_instance: Runs an EC2 instance from the latest official Rails CI AMI. (TODO: link)
+* railsci\_build\_ami: Builds an updated or customized Rails CI AMI image on EC2.  Uses [boxbuilder](http://github.com/thewoolleyman/boxbuilder) to build the AMI
+* railsci\_build: Builds a Rails CI instance on a local box or Virtual Machine
 
 Issue Trackers:
 
 * Scripts and docs: [http://github.com/thewoolleyman/railsci/issues](http://github.com/thewoolleyman/railsci/issues)
 * Supporting Chef repo: [http://github.com/thewoolleyman/railsci_chef_repo/issues](http://github.com/thewoolleyman/railsci_chef_repo/issues)
+
+**WARNING! RAILSCI INCURS EC2 RESOURCE CHARGES!
+The 'railsci\_build\_ami' and 'railsci\_run\_ec2\_instance' scripts will run boxbuilder to automatically create EC2 instances, EBS volumes and EBS snapshots.
+Boxbuilder will ATTEMPT TO automatically terminate any EC2 instance it has automatically started,
+but if the scripts fail or are killed the might not be removed.
+It is YOUR RESPONSIBILITY to confirm that any EC2 resources which boxbuilder creates are
+terminated even if boxbuilder fails to terminate them automatically.
+If you do not YOU WILL BE CHARGED BY AMAZON FOR ANY RESOURCES UNTIL THEY ARE TERMINATED.
+Learn how to delete any unused resources via the the EC2 AWS Management Console
+before using the 'build\_ami' scripts: [https://console.aws.amazon.com/ec2/home](https://console.aws.amazon.com/ec2/home) .
+Resources which boxbuilder automatically starts will be identified by the string
+'boxbuilder\_temp\_builder\_instance\_safe\_to\_terminate' in the resource's
+User Data instance attribute or Snapshot Description.
+The User Data instance attribute is not visible via the EC2 AWS Management Console,
+but can be seen using this command:
+'ec2-describe-instance-attribute {instance id} --user-data'.**
 
 Goals
 =====
@@ -32,11 +45,11 @@ Running the standard Rails CI instance on a new EC2 instance
 ============================================================
 Run a Rails CI instance on your EC2 account:
 
-    ./run_rails_ci_instance
+    ./railsci_run_ec2_instance
 
 Environment variables (~/.railscirc is automatically read):
 
-    # RAILSCI_AMI:Optional. ID of Rails CI AMI to use
+    # RAILSCI_AMI: Optional. ID of Rails CI AMI to use
     RAILSCI_AMI='ami-0d729464'
 
 Running the standard Rails CI instance on a Local Box or Virtual Machine
@@ -46,10 +59,15 @@ and the [Ubuntu Server](http://www.ubuntu.com/server) ISO image.
 
 Log in or SSH to the new box, then wget and run the 'install\_rails\_ci' script.
 
-    wget -O /tmp/install_rails_ci http://github.com/thewoolleyman/railsci/raw/master/install_rails_ci && chmod +x /tmp/install_rails_ci && /tmp/install_rails_ci
+    wget -O /tmp/railsci_build http://github.com/thewoolleyman/railsci/raw/master/railsci_build && chmod +x /tmp/railsci_build && /tmp/railsci_build
     # If you want to poke around, log out or source ~/.bashrc after the first build
 
-To use custom settings, set any of the RAILSCI\_* variables directly before invoking the script, or in $RAILSCI_CONFIG (~/.railscirc).
+Customizing a Rails CI instance
+===============================
+
+To use custom settings, set any of the railsci\_* variables directly, in a downloadable config 
+specified at boxbuilder\_url, in $HOME/.boxbuilderrc, or in boxbuilder_config.  See the boxbuilder project
+for more details on configuration options.
 
 Hacking
 =======
@@ -58,85 +76,49 @@ package/gem upgrades cause breakages.  Other people will want to tweak the CI en
 the scripts and process have been designed to make it easy to rebuild and test a new Rails CI AMI image 
 or server from scratch.
 
-Wherever possible, setup and configuration is performed via [Chef](http://www.opscode.com/chef/) using 
-the [Rails CI Chef Repo](http://github.com/thewoolleyman/railsci_chef_repo).  This means you can update an existing
-Rails CI environment without rebuilding it:
+Setup and configuration is performed via [chef-solo](http://www.opscode.com/chef/) using 
+the [Rails CI Chef Repo](http://github.com/thewoolleyman/railsci_chef_repo).  Chef is bootstrapped onto
+boxes or AMI images with boxbuilder.  This allows you to automatically update an existing Rails CI
+environment without rebuilding it or starting a new instance from a newer AMI:
 
     cd ~/chef/railsci_chef_repo
     git pull && git submodule update # Or checkout from your own fork
     rvmsudo chef-solo -c ~/chef/railsci_chef_repo/config/solo.rb -j ~/chef/railsci_chef_repo/config/node.json
 
-You can also use git to switch ~/chef/railsci\_chef\_repo to a local checkout of your remote 
-fork of [railsci\_chef\_repo](http://github.com/thewoolleyman/railsci_chef_repo), or set
-override RAILSCI\_CHEF\_REPO\_URL when you are originally running the setup script.  This will allow you to
+You can also use git to switch ~/.chef/railsci\_chef\_repo to a local checkout of your remote 
+fork of [railsci\_chef\_repo](http://github.com/thewoolleyman/railsci_chef_repo), or override
+override boxbuilder\_chef\_repos when you are originally running the setup script.  This will allow you to
 hack the Chef cookbooks in-place, and commit/push any improvements or fixes directly from the machine.
-Please [open issues](http://github.com/thewoolleyman/railsci_chef_repo/issues) or send pull requests for your improvements.
+
+Please [open issues](http://github.com/thewoolleyman/railsci_chef_repo/issues) or send pull requests for
+your improvements.
 
 Environment Variables to customize how the Rails CI server Will Be Built
 =========================================================================
 The following variables are supported by 'rails\_ci\_setup':
 
-    # RAILSCI_RVM_RUBIES: Optional. Space-delimited list of RVM ruby interpreters to install.  Default: RAILSCI_RVM_RUBIES='1.8.7-p174 1.9.2'
-    export RAILSCI_RVM_DEFAULT_RUBY='1.8.7-p174'
-    # RAILSCI_CHEF_DIR: Optional.  Directory in which to store the Chef repo.  Default: RAILSCI_CHEF_DIR=$HOME/chef
-    export RAILSCI_CHEF_DIR=$HOME/chef
-    # RAILSCI_CHEF_REPO_URL: Optional. Git repo URL to Rails CI custom chef repo.  Default: RAILSCI_CHEF_REPO_URL='git://github.com/thewoolleyman/railsci_chef_repo.git'    
-    export RAILSCI_CHEF_REPO_URL='git://github.com/thewoolleyman/railsci_chef_repo.git'
-    # RAILSCI_CHEF_GEM_INSTALL_OPTIONS: Optional. Options to pass to 'gem install chef'.  Useful if you want to install a custom or prerelease Chef gem, e.g. ''--version=x.y.z.a1 --source=http://my.gem.server --prerelease'  Default: RAILSCI_CHEF_REPO_URL=''    
-    export RAILSCI_CHEF_GEM_INSTALL_OPTIONS=''
+    # railsci_rvm_rubies: Optional. Space-delimited list of RVM ruby interpreters to install.  Default: railsci_rvm_rubies='1.8.7-p174 1.9.2'
+    export railsci_rvm_default_ruby='1.8.7-p174'
+    # railsci_chef_repo_url: Optional. Git repo URL to Rails CI custom chef repo.  Default: railsci_chef_repo_url='git://github.com/thewoolleyman/railsci_chef_repo.git'    
+    export railsci_chef_repo_url='git://github.com/thewoolleyman/railsci_chef_repo.git'
+    # railsci_chef_gem_install_options: Optional. Options to pass to 'gem install chef'.  Useful if you want to install a custom or prerelease Chef gem, e.g. ''--version=x.y.z.a1 --source=http://my.gem.server --prerelease'  Default: railsci_chef_repo_url=''    
+    export railsci_chef_gem_install_options=''
 
 Creating an updated or customized Rails CI AMI
 ==============================================
+**WARNING: It is YOUR RESPONSIBILITY to ensure that any EC2 resources which railsci and boxbuilder creates are
+automatically shut down.  If you do not YOU WILL BE CHARGED BY AMAZON UNTIL THEY ARE SHUT DOWN.  See
+the detailed warning at the top of this README.**
+
 Create an updated/customized EBS boot AMI for Rails CI instance:
 
-    ./create_ami
+    ./railsci_build_ami
 
-This will automatically download the and run the amibuilder script, which will spin up an EC2 instance, 
+This will automatically download the and run the boxbuilder\_remote\_build\_ami script, which will run an EC2 instance, 
 which will be used to create an AMI image.
 
-Operation of create\_ami and  ami\_builder is controlled by environment variables.  The following 
-environment variables are used directly by create_ami.  You can set them yourself, or paste this into ~/.railscirc and 
-they will be read automatically (replace with your proper values).
-
-    # AMIBUILDER_URL: Optional. URL of AMIBuilder release to be run
-    export AMIBUILDER_URL='http://github.com/thewoolleyman/amibuilder/raw/master/amibuilder' 
-    # AMIBUILDER_CUSTOM_SETUP_URL: Optional. URL of script containing Rails CI custom AMI setup which AMIBuilder will run automatically.
-    export AMIBUILDER_CUSTOM_SETUP_URL='http://github.com/thewoolleyman/railsci/raw/master/script/rails_ci_setup'
-    # AMIBUILDER_CUSTOM_SETUP_VARS: Optional. Variables which AMIBUILDER will set in the remote chroot AMI image before it runs AMIBUILDER_CUSTOM_SETUP_URL.  More info below.
-    export AMIBUILDER_CUSTOM_SETUP_VARS="RAILSCI_RVM_RUBIES='1.8.7-p174 1.9.2-head' RAILSCI_RVM_DEFAULT_RUBY='1.8.7-p174'"
-    # RAILSCI_AMIBUILDER_VARS: Optional.  Variables which create_ami will set before it runs the amibuilder script downloaded from AMIBUILDER_URL.  Executed locally, so you could do this: RAILSCI_AMIBUILDER_VARS="AMIBUILDER_CONFIG=~/.amibuilderrc_debug" 
-    export RAILSCI_AMIBUILDER_VARS=""
-
-You can also specify multiple 'remote' environment variables in the 'AMIBUILDER\_CUSTOM\_SETUP\_VARS' variable.  This is 
-because AMIBUILDER remotely downloads and runs the script from 'AMIBUILDER\_CUSTOM\_SETUP\_URL', which points 
-to 'rails\_ci\_setup' by default.  Any of the 'RAILSCI\_*' variables can be used.
-
-Notes and Environment Variables for Developers and Debugging
-============================================================
-The 'install\_rails\_ci' script is just a wrapper to clone this Rails CI repo and run 'scripts/rails\_ci\_setup'.  You
-can override RAILSCI\_URL and RAILSCI\_DIR to specify what Git repo url to clone from and what local directory to clone
-into and run from.  This lets you use the ssh URL to your read+write github fork of [railsci](http://github.com/thewoolleyman/railsci),
-so you can hack the 'rails\_ci\_setup' script in-place, and commit/push any improvements or fixes directly from the machine.
-Please [open issues](http://github.com/thewoolleyman/railsci/issues) or send pull requests for your improvements.
-
-The 'rails\_ci\_setup' script itself should rarely need to be changed, unless it is being ported to a new platform, distro, 
-or release (most breakages will probably be due to package/gem version updates, which can be fixed in
-[railsci\_chef\_repo](http://github.com/thewoolleyman/railsci_chef_repo).  However, the following environment variables
-will be helpful when it necessary to debug/hack the 'rails\_ci\_setup' script:
-
-The following environment variable flags are useful for debugging failing steps of the CI server build without performing a full run each time.  For EC2 AMI builds, these 
-are also passed in 'AMIBUILDER\_CUSTOM\_SETUP\_VARS'.  Also see the supported [AMIBUILDER debugging flags](http://github.com/thewoolleyman/amibuilder)
-
-    # RAILSCI_NO_INSTALL_PACKAGES: if set, skip step to install packages.  Default: RAILSCI_NO_INSTALL_PACKAGES=false
-    export RAILSCI_NO_INSTALL_PACKAGES=false
-    # RAILSCI_NO_SETUP_RVM: if set, skip step to install RVM.  Default: RAILSCI_NO_SETUP_RVM=false
-    export RAILSCI_NO_SETUP_RVM=false
-    # RAILSCI_NO_INSTALL_CHEF: if set, skip step to install CHEF.  Default: RAILSCI_NO_INSTALL_CHEF=false
-    export RAILSCI_NO_INSTALL_CHEF=false
-    # RAILSCI_NO_DOWNLOAD_CHEF_CONFIG: if set, skip step to download custom chef configs and repos.  Default: RAILSCI_NO_DOWNLOAD_CHEF_CONFIG=false
-    export RAILSCI_NO_DOWNLOAD_CHEF_CONFIG=false
-    # RAILSCI_NO_RUN_CHEF: if set, skip step to run CHEF.  Default: RAILSCI_NO_RUN_CHEF=false
-    export RAILSCI_NO_RUN_CHEF=false
+Any of the 'railsci\_*' variables can be passed on via boxbuilder to customize how the AMI is built.  See the
+'Customizing a Rails CI instance' section above for details..
 
 License
 =======

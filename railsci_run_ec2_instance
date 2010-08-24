@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+#  Rails CI - railsci_run_ec2_instance - http://github.com/thewoolleyman/railsci
+#  Runs an EC2 instance from the AMI for the standard Ruby on Rails Continuous Integration build
+#  Copyright (c) 2010 Chad Woolley - The MIT License
+
+# TODO: finish

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+#  Rails CI - railci_build - http://github.com/thewoolleyman/railsci
+#  Script to automatically install the standard Ruby on Rails Continuous Integration build on the local machine
+#  Copyright (c) 2010 Chad Woolley - The MIT License
+
+# TODO: finish

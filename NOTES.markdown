@@ -1,6 +1,6 @@
 SERVERS
 =======
-* ci.rubyonrails.org: slicehost VM, just runs Pivotal Pulse for Rails builds
+* ci.rubyonrails.org: slicehost VM, just runs Pivotal CI Monitor for Rails builds
 * EC2 instances donated by EngineYard
   * mri186.ci.rubyonrails.org
     * 174.129.2.92
@@ -18,16 +18,6 @@ EC2 Info
 
 * Alestic AMI list: http://alestic.com/
 * Ubuntu AMI list: http://uec-images.ubuntu.com/releases/lucid/release/
-
-Dev Environment Setup
-=====================
-* EC2 API Tools: http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351&categoryID=88
-* EC2 AMI Tools: http://developer.amazonwebservices.com/connect/entry.jspa?externalID=368&categoryID=88
-* Install both to ~/bin/..., add their bin dirs to OSX /etc/paths.d/ec2
-
-EC2 AMI Setup Notes:
-================
-* Creating image: http://github.com/thewoolleyman/amibuilder
 
 TODO:
 =====
